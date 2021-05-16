@@ -9,6 +9,10 @@
 		
 		<div class="container py-4">
 		
+			<div class="alert alert-success" role="alert" th:if="${operationSuccess}">
+			  Operaci&oacute;n Exitosa
+			</div>
+		
 			<div class="card bg-light">
 				
 				<div class="card-header" th:text="${title_gridMecanico}">
@@ -32,17 +36,29 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="mant : ${listaMecanicos}">
+							<tr th:each="mant : ${listaMecanicos}" th:class="${mant.getEstado() == 'A'}? text-black : text-muted">
 								<td th:text="${mant.getMecanicoPK().getTipo_documento()}"></td>
 								<td th:text="${mant.getMecanicoPK().getDocumento()}"></td>
 								<td th:text="${mant.getNombreCompl()}"></td>
 								<td th:text="${mant.getCelular()}"></td>
 								<td th:text="${mant.getEmail()}"></td>
-								<td><a class="btn btn-info" th:href="@{/formMecanico/}+${mant.getMecanicoPK().getDocumento()}+@{/}+${mant.getMecanicoPK().getTipo_documento()}">Editar</a></td>
 								<td>
-									<a class="btn btn-danger" onclick="return confirm('Está seguro que desea elminar este registro?')"
+									<a class="btn btn-info" 
+										th:href="@{/formMecanico/}+${mant.getMecanicoPK().getDocumento()}+@{/}+${mant.getMecanicoPK().getTipo_documento()}">
+										Editar
+									</a>
+								</td>
+								<td>
+									<a class="btn btn-danger" th:if="${mant.getEstado() == 'A'}"
+										onclick="return confirm('&iquest;Est&aacute; seguro que desea desactivar este registro?')"
 										th:href="@{/deleteMecanico/}+${mant.getMecanicoPK().getDocumento()}+@{/}+${mant.getMecanicoPK().getTipo_documento()}">
-											Eliminar
+											Inactivar
+									</a>
+									
+									<a class="btn btn-success" th:if="${mant.getEstado() == 'I'}"
+										onclick="return confirm('&iquest;Est&aacute; seguro que desea activar este registro?')"
+										th:href="@{/activarMecanico/}+${mant.getMecanicoPK().getDocumento()}+@{/}+${mant.getMecanicoPK().getTipo_documento()}">
+											Activar
 									</a>
 								</td>
 							</tr>

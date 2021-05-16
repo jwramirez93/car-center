@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<head th:replace="layout/layout :: head"></head>
+	
+	<body>
+	
+		<header th:replace="layout/layout :: header"></header>
+	
+		<div class="container py-4">
+		
+			<div class="alert alert-danger" role="alert" th:if="${operationAlert}">
+			  Por favor corregir los errores del formulario
+			</div>
+		
+			<div class="card bg-light">
+				
+				<div class="card-header" th:text="${title_formMantenimiento}">
+				</div>
+				
+				<div class="card-body">
+	
+					<form class="row g-3" th:object="${mantenimiento}"
+						th:action="@{/formMantenimiento}" method="POST">
+					
+						<div class="col-md-4">
+							<label class="form-label" for="vehiculo">Veh&iacute;culo:</label>
+							<select class="form-control" th:field="*{vehiculo}" th:errorClass="'form-control alert-danger'">
+								<option value="">Escoja una opci&oacute;n...</option>
+								<option th:each="veh : ${listaVehiculos}" th:value="${veh.getPlaca()}"
+									th:text="${veh.getPlaca()}+' - '+${veh.getCliente().getNombreCompl()}"></option>
+							</select>
+							<small class="form-text text-danger" th:if="${#fields.hasErrors('vehiculo')}" th:errors="*{vehiculo}" ></small>
+						</div>
+						
+						<div class="col-md-2">
+							<label class="py-2"></label>
+							<button class="btn btn-secondary col-12" disabled>Crear Vehiculo</button>
+						</div>
+						
+						<div class="col-md-2">
+							<label class="form-label" for="primer_nombre">Precio Tope:</label>
+							<input class="form-control" type="text" th:field="*{precio_tope}">
+						</div>
+						
+						<div class="col-md-2">
+							<label class="py-2"></label>
+							<button type="submit" class="btn btn-primary col-12">Aceptar</button>
+						</div>
+						
+						
+					</form>
+				</div>
+			</div>
+				
+		</div>
+		
+		<footer th:replace="layout/layout :: footer"></footer>
+		
+	</body>
+</html>

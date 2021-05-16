@@ -9,6 +9,10 @@
 	
 		<div class="py-4">
 		
+			<div class="alert alert-success" role="alert" th:if="${operationSuccess}">
+			  Operaci&oacute;n Exitosa
+			</div>
+		
 			<div class="card bg-light">
 					
 				<div class="card-header" th:text="${title_gridMantenimiento}">
@@ -17,7 +21,7 @@
 				<div class="card-body">
 				
 					<div class="card-title">
-						<a th:href="@{/formMecanico}" class="btn btn-secondary">Crear nuevo mantenimiento</a>
+						<a th:href="@{/formMantenimiento}" class="btn btn-secondary">Crear nuevo mantenimiento</a>
 					</div>
 		
 					<table class="table table-bordered">
@@ -43,12 +47,10 @@
 								</td>
 								<td th:if="${mant.getMecanico()}" th:text="${mant.getMecanico().getNombreCompl()}"></td>
 								
-								<td th:if="${mant.getPrecio_tope() <= 0}">No se define tope</td>
-								<td th:if="${mant.getPrecio_tope() > 0}" 
-									th:text="'$'+${#numbers.formatDecimal(mant.getPrecio_tope(), 1, 'DEFAULT', 2, 'DEFAULT')}"></td>
+								<td th:text="${mant.getPrecio_tope() <= 0}? 'No se define tope': '$'+${#numbers.formatDecimal(mant.getPrecio_tope(), 1, 'DEFAULT', 2, 'DEFAULT')}"></td>
 								<td th:text="'$'+${#numbers.formatDecimal(mant.getPrecioTotalServicios(), 1, 'DEFAULT', 2, 'DEFAULT')}"></td>
 								<td><button class="btn btn-secondary">Asignar Servicios</button></td>
-								<td></td>
+								<td th:text="'$'+${#numbers.formatDecimal(mant.getPrecioTotalRepuestos(), 1, 'DEFAULT', 2, 'DEFAULT')}"></td>
 								<td><button class="btn btn-secondary">Asignar Repuestos</button></td>
 								<td><button class="btn btn-secondary">Realizar Facturacion</button></td>
 							</tr>
@@ -94,7 +96,7 @@
 		      	
 		      </div>
 		      <div class="modal-footer">
-		      	<a th:href="@{/saveAsignacionMecanico}" id="btnAceptarAsignacion" class="btn" disabled>Aceptar</a>
+		      	<a th:href="@{/saveAsignacionMecanico}" id="btnAceptarAsignacion" class="btn" disabled onclick="validateClick(this)">Aceptar</a>
 		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
 		      </div>
 		    </div>

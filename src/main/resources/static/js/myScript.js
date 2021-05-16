@@ -1,7 +1,18 @@
+$(document).ready(function() {
+    
+    $('#btnAceptarAsignacion').click(function() {
+		if($('#btnAceptarAsignacion').attr('disabled') == 'disabled')
+        	return false;
+    });
+    
+});
+
 function selectRadio(obj){
 
+
     var btnAceptarAsignacion = document.getElementById('btnAceptarAsignacion');
-    var txtMantenimiento = document.getElementById('txtMantenimiento');
+    
+	var txtMantenimiento = document.getElementById('txtMantenimiento');
 
     btnAceptarAsignacion.removeAttribute('disabled');
 
@@ -15,6 +26,7 @@ function selectRadio(obj){
 
     var valueClass = 'btn btn-success';
     btnAceptarAsignacion.setAttribute('class', valueClass);
+   
 }
 
 function selectAsigMec(obj){
@@ -23,4 +35,8 @@ function selectAsigMec(obj){
     var txtMantenimiento = document.getElementById('txtMantenimiento');
     
     txtMantenimiento.setAttribute('data-form', dataMantenimiento)
+}
+
+function validateClick(obj){
+	return false;
 }

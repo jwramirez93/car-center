@@ -1,8 +1,6 @@
 package com.carcenter.api.controllers;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -15,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.carcenter.api.domain.repository.MecanicoRepository;
 import com.carcenter.api.domain.repository.ReferenciaRepository;
@@ -50,7 +49,7 @@ public class MecanicoController {
 	}
 	
 	@PostMapping("/formMecanico")
-	public String saveMecanico(@Valid Mecanico mecanico, BindingResult validations, Model model) {
+	public String saveMecanico(@Valid Mecanico mecanico, BindingResult validations, Model model, RedirectAttributes flashAttr) {
 		
 		List<Referencia> tiposIdentificacion = this.referenciaRepository.
 				getReferenciasByIdentificador(Constants.TIPOS_IDENTIFICACION);
@@ -59,25 +58,19 @@ public class MecanicoController {
 		
 		if(validations.hasErrors()) {
 			
-			Map<String, String> errores = new HashMap<>();
-			validations.getFieldErrors().forEach(errorV -> {
-				errores.put(errorV.getField(), "El campo "+errorV.getField()+" "+errorV.getDefaultMessage());
-				System.out.println("**"+"El campo "+errorV.getField()+" "+errorV.getDefaultMessage());
-			});
-			
 			model.addAttribute("operationAlert", true);
+			model.addAttribute("nav_active_grid_mec", "nav-link"); 
+			model.addAttribute("nav_active_grid_man", "nav-link");
+			
+			return "formMecanico";
 		}else {
-			System.out.println(mecanico.toString());
 			this.mecanicoRepository.save(mecanico);
 			model.addAttribute("operationSuccess", true);
 		}
 		
-		model.addAttribute("nav_active_grid_mec", "nav-link"); 
-		model.addAttribute("nav_active_grid_man", "nav-link");
-		
-		
-		return "formMecanico";
-		//return "redirect:/formMecanico/"+mecanico.getMecanicoPK().getDocumento()+"/"+mecanico.getMecanicoPK().getTipo_documento();
+
+		flashAttr.addFlashAttribute("operationSuccess", true);		
+		return "redirect:/gridMecanico";
 	}
 	
 	@GetMapping("/formMecanico/{id}/{tipoId}")
@@ -91,7 +84,7 @@ public class MecanicoController {
 		if(Objects.isNull(mecBD.get())) {
 			model.addAttribute("operationWarning", true);
 		}else {
-			//this.mecanicoRepository.save(null);
+
 			model.addAttribute("mecanico", mecBD.get());
 			
 			List<Referencia> tiposIdentificacion = this.referenciaRepository.
@@ -108,7 +101,7 @@ public class MecanicoController {
 		return "formMecanico";
 	}
 	
-	@GetMapping("/gridMecanico")
+	@GetMapping({"/gridMecanico", "/"})
 	public String gridMecanico(Model model) {
 		
 		List<Mecanico> listaMecanicos = this.mecanicoRepository.getAll();
@@ -129,14 +122,29 @@ public class MecanicoController {
 		mecanicoPK.setTipo_documento(tipoId);
 		Optional<Mecanico> mecBD = this.mecanicoRepository.getByMecanicoPK(mecanicoPK);
 		
-		if(Objects.isNull(mecBD.get())) {
-			//model.addAttribute("operationWarning", true);
-		}else {
+		if(!Objects.isNull(mecBD.get())) {
 			mecBD.get().setEstado(Constants.ESTADO_INACTIVO);
 			this.mecanicoRepository.save(mecBD.get());
 		}
 		
 		return 	"redirect:/gridMecanico";
 	}
+	
+	@GetMapping("/activarMecanico/{id}/{tipoId}")
+	public String activarMecanico(@PathVariable Long id, @PathVariable String tipoId) {
+		
+		MecanicoPK mecanicoPK = new MecanicoPK();
+		mecanicoPK.setDocumento(id);
+		mecanicoPK.setTipo_documento(tipoId);
+		Optional<Mecanico> mecBD = this.mecanicoRepository.getByMecanicoPK(mecanicoPK);
+		
+		if(!Objects.isNull(mecBD.get())) {
+			mecBD.get().setEstado(Constants.ESTADO_ACTIVO);
+			this.mecanicoRepository.save(mecBD.get());
+		}
+		
+		return 	"redirect:/gridMecanico";
+	}
+	
 	
 }

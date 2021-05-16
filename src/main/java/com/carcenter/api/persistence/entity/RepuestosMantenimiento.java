@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "repuestos_x_mantenimientos")
+@Table(name = "repuestos_x_mantenimiento")
 public class RepuestosMantenimiento {
 
 	@Id
@@ -18,17 +18,49 @@ public class RepuestosMantenimiento {
 	private Long codigo;
 	
 	@Column
-	private int unidades;
+	private Long unidades;
 	
 	@Column
 	private Long tiempo_estimado;
 	
 	@ManyToOne
-    @JoinColumn(name = "cod_mantenimiento", referencedColumnName = "codigo")
-	private Mantenimiento mantenimiento;
+    @JoinColumn(name = "cod_repuesto")
+	private Repuesto repuesto;
 	
 	@ManyToOne
-    @JoinColumn(name = "cod_repuesto", referencedColumnName = "codigo")
-	private Repuesto repuesto;
+    @JoinColumn(name = "cod_mantenimiento")
+	private Mantenimiento mantenimiento;
+
+	public Long getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(Long codigo) {
+		this.codigo = codigo;
+	}
+
+	public Long getUnidades() {
+		return unidades;
+	}
+
+	public void setUnidades(Long unidades) {
+		this.unidades = unidades;
+	}
+
+	public Long getTiempo_estimado() {
+		return tiempo_estimado;
+	}
+
+	public void setTiempo_estimado(Long tiempo_estimado) {
+		this.tiempo_estimado = tiempo_estimado;
+	}
+
+	public Repuesto getRepuesto() {
+		return repuesto;
+	}
+
+	public void setRepuesto(Repuesto repuesto) {
+		this.repuesto = repuesto;
+	}
 	
 }

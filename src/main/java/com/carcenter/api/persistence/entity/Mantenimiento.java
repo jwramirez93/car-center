@@ -19,7 +19,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "mantenimientos")
@@ -30,11 +30,11 @@ public class Mantenimiento {
 	private Long codigo;
 	
 	@Column
-	@NotEmpty
 	private String estado;
 	
 	@OneToOne
 	@JoinColumn(name = "cod_placa")
+	@NotNull
 	private Vehiculo vehiculo;
 	
 	@Column
@@ -171,6 +171,18 @@ public class Mantenimiento {
 		
 		for (ServicioMantenimiento servicioM : this.listaServicios) {
 			precio = precio.add(servicioM.getPrecio());
+		}
+		
+		return precio;
+	}
+	
+public BigDecimal getPrecioTotalRepuestos() {
+		
+		BigDecimal precio = new BigDecimal(0);
+		
+		for (RepuestosMantenimiento repuestoM : this.listaRepuestos) {
+			BigDecimal precioAux = BigDecimal.valueOf(repuestoM.getUnidades(), 0).multiply(repuestoM.getRepuesto().getPrecio_unitario());
+			precio = precio.add(precioAux);
 		}
 		
 		return precio;
