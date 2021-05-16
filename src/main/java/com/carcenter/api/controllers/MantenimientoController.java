@@ -1,6 +1,8 @@
 package com.carcenter.api.controllers;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.carcenter.api.domain.dto.MecanicoStatistics;
@@ -16,6 +19,8 @@ import com.carcenter.api.domain.repository.MantenimientoRepository;
 import com.carcenter.api.domain.repository.MecanicoRepository;
 import com.carcenter.api.domain.repository.ReferenciaRepository;
 import com.carcenter.api.persistence.entity.Mantenimiento;
+import com.carcenter.api.persistence.entity.Mecanico;
+import com.carcenter.api.persistence.entity.MecanicoPK;
 import com.carcenter.api.persistence.entity.Referencia;
 import com.carcenter.api.utils.Constants;
 
@@ -43,6 +48,8 @@ public class MantenimientoController {
 		model.addAttribute("listaMecanicos", listaMecanicos);
 		model.addAttribute("listaMantenimientos", listaMantenimientos);
 		model.addAttribute("title_gridMantenimiento", "Formulario de Mantenimientos");
+		model.addAttribute("nav_active_grid_mec", "nav-link"); 
+		model.addAttribute("nav_active_grid_man", "nav-link active");
 		
 		return "gridMantenimiento";
 	}
@@ -67,6 +74,30 @@ public class MantenimientoController {
 		model.addAttribute("listaMecanicos", listaMecanicos);
 		
 		return "asignacionMecanico";
+	}
+	
+	@GetMapping("/saveAsignacionMecanico/{id}/{tipoId}/{idM}")
+	public String saveAsignacionMecanico(@PathVariable Long id, @PathVariable String tipoId, @PathVariable Long idM, Model model) {
+		
+		MecanicoPK mecanicoPK = new MecanicoPK();
+		mecanicoPK.setDocumento(id);
+		mecanicoPK.setTipo_documento(tipoId);
+		
+		Optional<Mecanico> mecO = this.mecanicoRepository.getByMecanicoPK(mecanicoPK);
+		Mecanico mec = mecO.get();
+		
+		if(!Objects.isNull(mec)) {
+		
+			Optional<Mantenimiento> mantO = this.mantenimientoRepository.getByCodigo(idM);
+			Mantenimiento mant = mantO.get();
+			
+			if(!Objects.isNull(mant)) {
+				mant.setMecanico(mec);
+				this.mantenimientoRepository.save(mant);
+			}
+		}
+		
+		return 	"redirect:/gridMantenimiento";
 	}
 	
 }

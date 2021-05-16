@@ -43,6 +43,8 @@ public class MecanicoController {
 		model.addAttribute("mecanico", mecanico);
 		model.addAttribute("tiposIdentificacion", tiposIdentificacion);
 		model.addAttribute("title_formMecanico", "Formulario Mecanicos");
+		model.addAttribute("nav_active_grid_mec", "nav-link"); 
+		model.addAttribute("nav_active_grid_man", "nav-link");
 		
 		return "formMecanico";
 	}
@@ -70,8 +72,12 @@ public class MecanicoController {
 			model.addAttribute("operationSuccess", true);
 		}
 		
+		model.addAttribute("nav_active_grid_mec", "nav-link"); 
+		model.addAttribute("nav_active_grid_man", "nav-link");
+		
 		
 		return "formMecanico";
+		//return "redirect:/formMecanico/"+mecanico.getMecanicoPK().getDocumento()+"/"+mecanico.getMecanicoPK().getTipo_documento();
 	}
 	
 	@GetMapping("/formMecanico/{id}/{tipoId}")
@@ -96,6 +102,8 @@ public class MecanicoController {
 		}
 		
 		model.addAttribute("title_formMecanico", "Formulario Mecanicos");
+		model.addAttribute("nav_active_grid_mec", "nav-link"); 
+		model.addAttribute("nav_active_grid_man", "nav-link");
 		
 		return "formMecanico";
 	}
@@ -107,6 +115,8 @@ public class MecanicoController {
 		
 		model.addAttribute("listaMecanicos", listaMecanicos);
 		model.addAttribute("title_gridMecanico", "Listado de Mecanicos");
+		model.addAttribute("nav_active_grid_mec", "nav-link active"); 
+		model.addAttribute("nav_active_grid_man", "nav-link");
 		
 		return "gridMecanico";
 	}
