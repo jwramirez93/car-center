@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<head th:replace="layout/layout :: head"></head>
+	
+	<body>
+		
+		<header th:replace="layout/layout :: header"></header>
+		
+		<div class="container py-4">
+		
+			<div class="card bg-light">
+				
+				<div class="card-header" th:text="${title_gridMecanico}">
+				</div>
+				
+				<div class="card-body">
+					
+					<div class="card-title">
+						<a th:href="@{/formMecanico}" class="btn btn-secondary">Crear nuevo mecanico</a>
+					</div>
+				
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>Tipo Identificación</th>
+								<th>Número Identificación</th>
+								<th>Nombre Completo</th>
+								<th>Celular</th>
+								<th>Correo Electronico</th>
+								<th colspan="2">Opciones</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="mant : ${listaMecanicos}">
+								<td th:text="${mant.getMecanicoPK().getTipo_documento()}"></td>
+								<td th:text="${mant.getMecanicoPK().getDocumento()}"></td>
+								<td th:text="${mant.getNombreCompl()}"></td>
+								<td th:text="${mant.getCelular()}"></td>
+								<td th:text="${mant.getEmail()}"></td>
+								<td><a class="btn btn-info" th:href="@{/formMecanico/}+${mant.getMecanicoPK().getDocumento()}+@{/}+${mant.getMecanicoPK().getTipo_documento()}">Editar</a></td>
+								<td>
+									<a class="btn btn-danger" onclick="return confirm('Está seguro que desea elminar este registro?')"
+										th:href="@{/deleteMecanico/}+${mant.getMecanicoPK().getDocumento()}+@{/}+${mant.getMecanicoPK().getTipo_documento()}">
+											Eliminar
+									</a>
+								</td>
+							</tr>
+						</tbody>
+					
+					</table>
+				</div>
+			</div>
+		
+		</div>
+	
+		<footer th:replace="layout/layout :: footer"></footer>
+	</body>
+	
+</html>

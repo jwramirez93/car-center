@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<head th:replace="layout/layout :: head"></head>
+	
+	<body>
+	
+		<header th:replace="layout/layout :: header"></header>
+	
+		<pre>
+			<p th:each="mant : ${listaMecanicos}" th:text="${mant.getTiempo_asignacion()}"></p>
+		</pre>
+		
+		<footer th:replace="layout/layout :: footer"></footer>
+	
+	</body>
+
+</html>

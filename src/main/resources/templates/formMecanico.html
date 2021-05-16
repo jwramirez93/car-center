@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<head th:replace="layout/layout :: head"></head>
+	
+	<body>
+	
+		<header th:replace="layout/layout :: header"></header>
+	
+		<div class="container py-4">
+		
+			<div class="alert alert-success" role="alert" th:if="${operationSuccess}">
+			  Operación Exitosa
+			</div>
+			
+			<div class="alert alert-danger" role="alert" th:if="${operationAlert}">
+			  Por favor corregir los errores del formulario
+			</div>
+			
+			<div class="alert alert-success" role="alert" th:if="${operationWarning}">
+			  Ocurrió un error, por favor revise la información enviada
+			</div>
+		
+			<div class="card bg-light">
+				
+				<div class="card-header" th:text="${title_formMecanico}">
+				</div>
+				
+				<div class="card-body">
+	
+					<form class="row g-3" th:object="${mecanico}"
+						th:action="@{/formMecanico}" method="POST">
+					
+						<div class="col-md-4">
+							<label class="form-label" for="tipoIdentificacion">Tipo Identificacion:</label>
+							<select class="form-select" th:field="*{mecanicoPK.tipo_documento}" th:errorClass="'form-control alert-danger'">
+								<option value="" selected>Escoja una opción...</option>
+								<option th:each="tipoId : ${tiposIdentificacion}" th:value="${tipoId.getValor()}" 
+									th:text="${tipoId.getValor()}"></option>
+							</select>
+							<small class="form-text text-danger" th:if="${#fields.hasErrors('mecanicoPK.tipo_documento')}" th:errors="*{mecanicoPK.tipo_documento}" ></small>
+						</div>
+						
+						<div class="col-md-4">
+							<label class="form-label" for="documento">Numero Documento:</label>
+							<input class="form-control" type="text" th:field="*{mecanicoPK.documento}" th:errorClass="'form-control alert-danger'">
+							<small class="form-text text-danger" th:if="${#fields.hasErrors('mecanicoPK.documento')}" th:errors="*{mecanicoPK.documento}" ></small>
+						</div>
+						
+						<div class="col-md-4">
+							<label class="form-label" for="primer_nombre">Primer Nombre:</label>
+							<input class="form-control" type="text" th:field="*{primer_nombre}" th:errorClass="'form-control alert-danger'">
+							<small class="form-text text-danger" th:if="${#fields.hasErrors('primer_nombre')}" th:errors="*{primer_nombre}" ></small>
+						</div>
+						
+						<div class="col-md-4">
+							<label class="form-label" for="segundoNombre">Segundo Nombre:</label>
+							<input class="form-control" type="text" th:field="*{segundo_nombre}">
+						</div>
+						
+						<div class="col-md-4">
+							<label class="form-label" for="primerApellido">Primer Apellido:</label>
+							<input class="form-control" type="text" th:field="*{primer_apellido}" th:errorClass="'form-control alert-danger'">
+							<small class="form-text text-danger" th:if="${#fields.hasErrors('primer_apellido')}" th:errors="*{primer_apellido}" ></small>
+						</div>
+						
+						<div class="col-md-4">
+							<label class="form-label" for="segundoNombre">Segundo Apellido:</label>
+							<input class="form-control" type="text" th:field="*{segundo_apellido}">
+						</div>
+						
+						<div class="col-md-4">
+							<label class="form-label" for="celular">Numero Contacto:</label>
+							<input class="form-control" type="text" th:field="*{celular}" th:errorClass="'form-control alert-danger'">
+							<small class="form-text text-danger" th:if="${#fields.hasErrors('celular')}" th:errors="*{celular}" ></small>
+						</div>
+						
+						<div class="col-md-4">
+							<label class="form-label" for="direccion">Direccion:</label>
+							<input class="form-control" type="text" th:field="*{direccion}" th:errorClass="'form-control alert-danger'">
+							<small class="form-text text-danger" th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}" ></small>
+						</div>
+						
+						<div class="col-md-4">
+							<label class="form-label" for="email">Correo Electronico:</label>
+							<input class="form-control" type="text" th:field="*{email}" th:errorClass="'form-control alert-danger'">
+							<small class="form-text text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}" ></small>
+						</div>
+						
+						<div class="col-md-4">
+							<label class="form-label" for="estado">Estado:</label>
+							
+							<div class="form-check">
+								<input value="A" th:field="*{estado}" class="form-check-input" type="radio">
+								<label class="form-check-label" for="estado">
+									Activo
+								</label>
+							</div>
+		
+							<div class="form-check">
+								<input value="I" th:field="*{estado}" class="form-check-input" type="radio">
+								<label class="form-check-label" for="estado">
+									Inactivo
+								</label>
+							</div>
+						</div>
+						
+						<div class="col-md-8">
+						</div>
+						
+						<div class="col-md-10">
+						</div>
+						
+						<div class="col-md-2">
+							<button type="submit" class="btn btn-primary col-12">Aceptar</button>
+						</div>
+						
+						
+					</form>
+				</div>
+			</div>
+				
+		</div>
+		
+		<footer th:replace="layout/layout :: footer"></footer>
+		
+	</body>
+</html>
