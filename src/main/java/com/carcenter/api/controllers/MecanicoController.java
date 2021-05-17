@@ -45,7 +45,7 @@ public class MecanicoController {
 		model.addAttribute("nav_active_grid_mec", "nav-link"); 
 		model.addAttribute("nav_active_grid_man", "nav-link");
 		
-		return "asd";
+		return "formMecanico";
 	}
 	
 	@PostMapping("/formMecanico")
