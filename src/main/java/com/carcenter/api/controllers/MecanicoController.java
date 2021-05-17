@@ -41,7 +41,7 @@ public class MecanicoController {
 		Mecanico mecanico = new Mecanico();
 		model.addAttribute("mecanico", mecanico);
 		model.addAttribute("tiposIdentificacion", tiposIdentificacion);
-		model.addAttribute("title_formMecanico", "Formulario Mecanicos");
+		model.addAttribute("title_formMecanico", Constants.TIT_FORM_MECANICO);
 		model.addAttribute("nav_active_grid_mec", "nav-link"); 
 		model.addAttribute("nav_active_grid_man", "nav-link");
 		
@@ -69,7 +69,7 @@ public class MecanicoController {
 		}
 		
 
-		flashAttr.addFlashAttribute("operationSuccess", true);		
+		flashAttr.addFlashAttribute("operationSuccess", true);	
 		return "redirect:/gridMecanico";
 	}
 	
@@ -94,7 +94,7 @@ public class MecanicoController {
 			
 		}
 		
-		model.addAttribute("title_formMecanico", "Formulario Mecanicos");
+		model.addAttribute("title_formMecanico", Constants.TIT_FORM_MECANICO);
 		model.addAttribute("nav_active_grid_mec", "nav-link"); 
 		model.addAttribute("nav_active_grid_man", "nav-link");
 		
@@ -115,7 +115,7 @@ public class MecanicoController {
 	}
 	
 	@GetMapping("/deleteMecanico/{id}/{tipoId}")
-	public String deleteMecanico(@PathVariable Long id, @PathVariable String tipoId) {
+	public String deleteMecanico(@PathVariable Long id, @PathVariable String tipoId, RedirectAttributes flashAttr) {
 		
 		MecanicoPK mecanicoPK = new MecanicoPK();
 		mecanicoPK.setDocumento(id);
@@ -125,13 +125,17 @@ public class MecanicoController {
 		if(!Objects.isNull(mecBD.get())) {
 			mecBD.get().setEstado(Constants.ESTADO_INACTIVO);
 			this.mecanicoRepository.save(mecBD.get());
+			
+			flashAttr.addFlashAttribute("operationSuccess", true);
+		}else {
+			flashAttr.addFlashAttribute("operationWarning", true);
 		}
 		
 		return 	"redirect:/gridMecanico";
 	}
 	
 	@GetMapping("/activarMecanico/{id}/{tipoId}")
-	public String activarMecanico(@PathVariable Long id, @PathVariable String tipoId) {
+	public String activarMecanico(@PathVariable Long id, @PathVariable String tipoId, RedirectAttributes flashAttr) {
 		
 		MecanicoPK mecanicoPK = new MecanicoPK();
 		mecanicoPK.setDocumento(id);
@@ -141,6 +145,10 @@ public class MecanicoController {
 		if(!Objects.isNull(mecBD.get())) {
 			mecBD.get().setEstado(Constants.ESTADO_ACTIVO);
 			this.mecanicoRepository.save(mecBD.get());
+			
+			flashAttr.addFlashAttribute("operationSuccess", true);
+		}else {
+			flashAttr.addFlashAttribute("operationWarning", true);
 		}
 		
 		return 	"redirect:/gridMecanico";

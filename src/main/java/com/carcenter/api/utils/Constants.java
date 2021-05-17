@@ -8,6 +8,8 @@ public class Constants {
 	public static final String ESTADO_ACTIVO="A";
 	public static final String ESTADO_INACTIVO="I";
 	public static final String ESTADO_NO_ASIGNADO="S";
+	public static final String TIT_FORM_MECANICO="Formulario Mecanicos";
+	public static final String TIT_FORM_MANTENIM="Formulario Mantenimientos";
 	
 	public static final String CONS_MEC_DISP = "SELECT mec.documento as documento, mec.tipo_documento as tipo_documento,\r\n"
 			+ "	CONCAT(mec.primer_nombre , mec.segundo_nombre ,' ', mec.primer_apellido , mec.segundo_apellido) as nombre_completo,\r\n"

@@ -103,6 +103,7 @@
 									Inactivo
 								</label>
 							</div>
+							<small class="form-text text-danger" th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}" ></small>
 						</div>
 						
 						<div class="col-md-8">

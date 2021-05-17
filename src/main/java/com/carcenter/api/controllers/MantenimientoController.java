@@ -54,22 +54,13 @@ public class MantenimientoController {
 		
 		model.addAttribute("listaMecanicos", listaMecanicos);
 		model.addAttribute("listaMantenimientos", listaMantenimientos);
-		model.addAttribute("title_gridMantenimiento", "Formulario de Mantenimientos");
+		model.addAttribute("title_gridMantenimiento", Constants.TIT_FORM_MANTENIM);
 		model.addAttribute("nav_active_grid_mec", "nav-link"); 
 		model.addAttribute("nav_active_grid_man", "nav-link active");
 		
 		return "gridMantenimiento";
 	}
-	
-	/*@PostMapping("/saveMantenimiento")
-	public String saveMantenimiento(@Valid Mantenimiento mantenimiento, BindingResult validations, Model model) {
-		
-		if(validations.hasErrors()) {
-			System.out.println("*** FLAG ERRORES ****");
-		}
-		
-		return "formMantenimiento";
-	}*/
+
 	
 	@GetMapping("/asignacionMecanico")
 	public String asignacionMecanico(Model model) {
@@ -101,10 +92,15 @@ public class MantenimientoController {
 			if(!Objects.isNull(mant)) {
 				mant.setMecanico(mec);
 				this.mantenimientoRepository.save(mant);
+				
+				flashAttr.addFlashAttribute("operationSuccess", true);
+			}else {
+				flashAttr.addFlashAttribute("operationWarning", true);
 			}
+		}else {
+			flashAttr.addFlashAttribute("operationWarning", true);
 		}
 		
-		flashAttr.addFlashAttribute("operationSuccess", true);
 		
 		return 	"redirect:/gridMantenimiento";
 	}
@@ -118,7 +114,7 @@ public class MantenimientoController {
 		
 		model.addAttribute("mantenimiento", mantenimiento);
 		model.addAttribute("listaVehiculos", listaVehiculos);
-		model.addAttribute("title_formMantenimiento", "Formulario Mantenimientos");
+		model.addAttribute("title_formMantenimiento", Constants.TIT_FORM_MANTENIM);
 		model.addAttribute("nav_active_grid_mec", "nav-link"); 
 		model.addAttribute("nav_active_grid_man", "nav-link");
 		
@@ -134,7 +130,7 @@ public class MantenimientoController {
 			
 			model.addAttribute("operationAlert", true);
 			
-			model.addAttribute("title_formMantenimiento", "Formulario Mantenimientos");
+			model.addAttribute("title_formMantenimiento", Constants.TIT_FORM_MANTENIM);
 			model.addAttribute("listaVehiculos", listaVehiculos);
 			model.addAttribute("nav_active_grid_mec", "nav-link"); 
 			model.addAttribute("nav_active_grid_man", "nav-link");

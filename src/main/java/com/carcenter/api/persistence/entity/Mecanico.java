@@ -46,6 +46,7 @@ public class Mecanico {
 	private String email;
 	
 	@Column
+	@NotEmpty
 	private String estado;
 
 	public MecanicoPK getMecanicoPK() {
